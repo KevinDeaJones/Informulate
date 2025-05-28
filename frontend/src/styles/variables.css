@@ -1,0 +1,76 @@
+:root {
+  /* ===== Color System ===== */
+  /* Primary */
+  --color-primary: #2563eb;
+  --color-primary-dark: #1d4ed8;
+  --color-primary-light: #93c5fd;
+
+  /* Success */
+  --color-success: #16a34a;
+  --color-success-dark: #15803d;
+  --color-success-light: #86efac;
+
+  /* Error */
+  --color-error: #dc2626;
+  --color-error-dark: #b91c1c;
+  --color-error-light: #fca5a5;
+
+  /* Neutrals */
+  --color-background: #f8fafc;
+  --color-surface: #ffffff;
+  --color-border: #e2e8f0;
+  --color-text-primary: #1e293b;
+  --color-text-secondary: #64748b;
+  --color-text-tertiary: #94a3b8;
+
+  /* ===== Spacing System ===== */
+  --space-base: 0.5rem;
+  --space-xs: calc(var(--space-base) * 1);
+  --space-sm: calc(var(--space-base) * 2);
+  --space-md: calc(var(--space-base) * 3);
+  --space-lg: calc(var(--space-base) * 4);
+  --space-xl: calc(var(--space-base) * 6);
+
+  /* ===== Border System ===== */
+  --border-radius: 0.5rem;
+  --border-radius-sm: 0.25rem;
+  --border-width: 2px;
+  --border-color: var(--color-border);
+
+  /* ===== Shadow System ===== */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.12);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+
+  /* ===== Transitions ===== */
+  --transition-timing: 0.2s ease;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* Dark Mode Colors */
+    --color-background: #0f172a;
+    --color-surface: #1e293b;
+    --color-border: #334155;
+    --color-text-primary: #f8fafc;
+    --color-text-secondary: #94a3b8;
+    --color-text-tertiary: #64748b;
+
+    /* Dark Mode Primary */
+    --color-primary: #3b82f6;
+    --color-primary-dark: #2563eb;
+
+    /* Dark Mode Success */
+    --color-success: #22c55e;
+    --color-success-dark: #16a34a;
+
+    /* Dark Mode Error */
+    --color-error: #ef4444;
+    --color-error-dark: #dc2626;
+
+    /* Dark Mode Shadows */
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.25);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.35);
+  }
+}

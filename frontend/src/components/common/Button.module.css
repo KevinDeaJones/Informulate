@@ -1,0 +1,100 @@
+.button {
+  /* Layout */
+  min-width: var(--button-min-width);
+  height: var(--button-height);
+  padding: 0 var(--space-lg);
+
+  /* Typography */
+  font-size: 0.9rem;
+  letter-spacing: 0.25px;
+
+  /* Flex Layout */
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+
+  /* Styling */
+  border-radius: var(--border-radius);
+  border: var(--border-width) solid transparent;
+  transition: all var(--transition-timing);
+  transform-origin: center;
+  gap: var(--space-xs);
+  position: relative;
+  overflow: hidden;
+}
+
+.primary {
+  background-color: var(--color-primary);
+  color: var(--color-primary-text);
+  border: 1px solid var(--color-primary-dark);
+}
+
+.primary:hover:not(:disabled) {
+  background-color: var(--color-primary-dark);
+  box-shadow: 0 2px 8px -1px var(--color-primary-light);
+}
+
+/* Hover Effects */
+.button:not(:disabled):hover {
+  transform: scale(var(--button-hover-scale));
+  box-shadow: var(--shadow-sm);
+}
+
+.button:not(:disabled):active {
+  transform: scale(0.98);
+}
+
+/* Loading State */
+.button[disabled][aria-busy='true'] {
+  --button-hover-scale: 1;
+  box-shadow: none;
+}
+
+.loadingContent {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  transition: opacity 0.2s ease;
+}
+
+/* Text Fade Animation */
+.button:not([aria-busy='true']) .loadingContent {
+  animation: textFadeIn 0.3s ease;
+}
+
+@keyframes textFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(2px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Sizes for Different Use Cases */
+.button.compact {
+  min-width: auto;
+  padding: 0 var(--space-md);
+  height: 2.25rem;
+}
+
+.button.fullWidth {
+  width: 100%;
+  max-width: 400px;
+  min-width: auto;
+}
+
+/* Dark Mode Adjustments */
+@media (prefers-color-scheme: dark) {
+  .secondary {
+    background-color: rgba(255, 255, 255, 0.05);
+    border-color: var(--color-border);
+  }
+
+  .secondary:hover:not(:disabled) {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+}

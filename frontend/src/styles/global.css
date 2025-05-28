@@ -1,0 +1,76 @@
+@import './variables.css';
+@import './animations.css';
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --color-error-bg: #fef2f2;
+  --color-success-bg: #f0fdf4;
+
+  /* Button Specific Variables */
+  --button-min-width: 8rem;
+  --button-height: 2.75rem;
+  --button-hover-scale: 1.02;
+
+  /* ===== Blue Primary ===== */
+  --color-primary: #3b82f6;
+  --color-primary-dark: #2563eb;
+  --color-primary-light: #93c5fd;
+  --color-primary-text: #ffffff;
+
+  /* Success (Green) */
+  --color-success: #22c55e;
+  --color-success-dark: #16a34a;
+  --color-success-light: #86efac;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--color-background);
+  color: var(--color-text-primary);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.error-message {
+  color: var(--color-error);
+  padding: var(--space-md);
+  background: #fef2f2;
+  border: 2px solid var(--color-error);
+  border-radius: var(--border-radius);
+  margin: var(--space-md) auto;
+  max-width: 600px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-primary: #60a5fa;
+    --color-primary-dark: #3b82f6;
+  }
+}
