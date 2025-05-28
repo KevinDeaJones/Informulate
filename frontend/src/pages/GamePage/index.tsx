@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useGame } from 'hooks/useGame';
 import { Button } from 'components/common/Button';
 import { Scoreboard } from 'components/layout/Scoreboard';
@@ -21,9 +21,13 @@ const GamePage = () => {
   } = useGame();
 
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
+  const hasStarted = useRef(false);
 
   useEffect(() => {
-    startNewGame();
+    if (!hasStarted.current) {
+      hasStarted.current = true;
+      startNewGame();
+    }
   }, []);
 
   const handleSubmit = () =>
