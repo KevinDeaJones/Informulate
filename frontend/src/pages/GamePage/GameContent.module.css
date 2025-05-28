@@ -1,0 +1,7 @@
+.submitButton {
+  margin-top: var(--space-lg);
+  width: 100%;
+  max-width: 300px;
+  margin-left: auto;
+  margin-right: auto;
+}

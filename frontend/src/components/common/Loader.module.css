@@ -1,0 +1,14 @@
+.container {
+  display: grid;
+  place-items: center;
+  min-height: 50px;
+}
+
+.spinner {
+  width: 2rem;
+  height: 2rem;
+  border: 3px solid var(--color-text-secondary);
+  border-top-color: var(--color-primary);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}

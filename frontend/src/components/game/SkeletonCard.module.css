@@ -1,0 +1,76 @@
+.card {
+  background: white;
+  border-radius: var(--border-radius);
+  padding: var(--space-lg);
+  margin: var(--space-lg) auto;
+  box-shadow: var(--shadow-md);
+  width: 100%;
+}
+
+.question {
+  height: 2.5rem;
+  width: 90%;
+  margin-bottom: var(--space-md);
+  border-radius: 4px;
+}
+
+.options {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-sm);
+}
+
+.option {
+  padding: var(--space-md);
+  border: var(--border-width) solid #e5e7eb;
+  border-radius: var(--border-radius);
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  height: 4rem;
+}
+
+.optionLabel {
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+}
+
+.optionText {
+  height: 1rem;
+  flex-grow: 1;
+  border-radius: 4px;
+}
+
+.question,
+.optionLabel,
+.optionText {
+  background: linear-gradient(90deg, #f3f4f6 25%, #e5e7eb 50%, #f3f4f6 75%);
+  background-size: 400% 100%;
+  animation: shimmer 1.5s infinite linear;
+  position: relative;
+  overflow: hidden;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .options {
+    grid-template-columns: 1fr;
+  }
+
+  .question {
+    height: 2rem;
+  }
+
+  .option {
+    height: 3.5rem;
+  }
+}

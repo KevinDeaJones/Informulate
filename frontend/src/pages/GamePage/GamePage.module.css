@@ -1,0 +1,15 @@
+.gameContainer {
+  padding-top: 6rem;
+  min-height: 100vh;
+  padding: 6rem var(--space-md) var(--space-md);
+  position: relative;
+}
+
+.noQuestions {
+  text-align: center;
+  padding: var(--space-xl);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  align-items: center;
+}

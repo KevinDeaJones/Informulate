@@ -1,0 +1,26 @@
+.panel {
+  border-radius: var(--border-radius);
+  padding: var(--space-md);
+  margin: var(--space-lg) 0;
+  animation: fadeIn 0.3s ease-out forwards;
+}
+
+.header {
+  font-weight: 700;
+  margin-bottom: var(--space-sm);
+}
+
+.text {
+  color: var(--color-text-primary);
+  line-height: 1.8;
+}
+
+.correct {
+  background-color: #f0fdf4;
+  border: var(--border-width) solid var(--color-success);
+}
+
+.incorrect {
+  background-color: #fef2f2;
+  border: var(--border-width) solid var(--color-error);
+}

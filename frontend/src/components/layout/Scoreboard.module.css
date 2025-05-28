@@ -1,0 +1,25 @@
+.scoreboard {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  padding: var(--space-sm);
+  background: var(--color-background);
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  gap: var(--space-lg);
+  z-index: 1000;
+}
+
+.score {
+  display: flex;
+  gap: var(--space-xs);
+  font-weight: 600;
+}
+
+.label {
+  color: var(--color-text-secondary);
+}
+
+.value {
+  color: var(--color-text-primary);
+}

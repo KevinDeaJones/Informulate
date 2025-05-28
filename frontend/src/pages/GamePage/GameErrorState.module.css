@@ -1,0 +1,12 @@
+.errorContainer {
+  text-align: center;
+  padding: var(--space-xl);
+}
+
+.errorMessage {
+  color: var(--color-error);
+  padding: var(--space-md);
+  margin-bottom: var(--space-lg);
+  background: var(--color-error-bg);
+  border-radius: var(--border-radius);
+}

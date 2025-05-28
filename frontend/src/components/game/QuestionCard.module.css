@@ -1,0 +1,90 @@
+.card {
+  background: white;
+  border-radius: var(--border-radius);
+  padding: var(--space-lg);
+  margin: var(--space-lg) auto;
+  box-shadow: var(--shadow-md);
+}
+
+.question {
+  font-size: 1.5rem;
+  margin-bottom: var(--space-md);
+  color: var(--color-text-primary);
+}
+
+.options {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-sm);
+}
+
+.option {
+  padding: var(--space-md);
+  border: var(--border-width) solid var(--color-text-secondary);
+  border-radius: var(--border-radius);
+  text-align: left;
+  background: transparent;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.option:hover:not(:disabled) {
+  border-color: var(--color-primary);
+}
+
+.optionLabel {
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+@media (max-width: 768px) {
+  .options {
+    grid-template-columns: 1fr;
+  }
+
+  .question {
+    font-size: 1.25rem;
+  }
+}
+
+.option:disabled {
+  opacity: 1;
+  cursor: not-allowed;
+}
+
+.submitButton:disabled {
+  background-color: var(--color-text-secondary);
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.submitButton:disabled:hover {
+  background-color: var(--color-text-secondary);
+}
+
+.selected {
+  border-color: var(--color-primary) !important;
+  background-color: #e0f2fe !important;
+}
+
+.correct {
+  border-color: var(--color-success) !important;
+  background-color: #f0fdf4 !important;
+  position: relative;
+}
+
+.incorrect {
+  border-color: var(--color-error) !important;
+  background-color: #fef2f2 !important;
+  opacity: 0.7;
+}
+
+.correctBadge {
+  position: absolute;
+  right: 1rem;
+  color: var(--color-success);
+  font-weight: bold;
+  font-size: 1.2em;
+}
