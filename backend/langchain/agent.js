@@ -12,7 +12,7 @@ dotenv.config();
 const model = new ChatOpenAI({
     openAIApiKey: process.env.OPENAI_API_KEY,
     temperature: 0.8,
-    modelName: 'gpt-4o'
+    modelName: 'gpt-3.5-turbo'
 });
 
 // Create a LangChain agent executor with custom tools

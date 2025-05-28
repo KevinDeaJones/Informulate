@@ -12,4 +12,9 @@ Output Format: {
   "Options": ["Red", "Blue", "Black", "White"],
   "AnswerIndex": 0
 }
-`;
+`
+export const EXPLANATION_PROMPT = `
+Given the following multiple-choice question, correct answer, and options, write a short and clear explanation suitable for a trivia game. The explanation should confirm the correct answer and provide a relevant fact or context.
+{QuestionData}
+Return only Raw Explanation.
+`
