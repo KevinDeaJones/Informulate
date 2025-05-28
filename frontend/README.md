@@ -1,46 +1,203 @@
-# Getting Started with Create React App
+# AI-Powered Trivia Question Generator
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Overview
 
-## Available Scripts
+This project is an AI-driven trivia question generator built using LangChain's ReAct agent architecture, Supabase for vector-based semantic retrieval, and OpenAI's GPT models. It dynamically generates multiple-choice questions grounded in context retrieved from a Supabase vector database.
 
-In the project directory, you can run:
+---
 
-### `npm start`
+## Environment Setup
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### 1. Clone the Repository and Install Dependencies
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+```bash
+git clone https://github.com/KevinDeaJones/Informulate.git
+cd frontend && npm install
+cd ../backend && npm install
+```
 
-### `npm test`
+### 2. Configure Supabase
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+#### Option A: Use Provided Supabase Project
 
-### `npm run build`
+Create a `.env` file in the backend root:
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```env
+OPENAI_API_KEY=[YOUR_OPENAI_API_KEY]
+SUPABASE_URL=https://nwrumscddywzhdqlispk.supabase.co
+SUPABASE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im53cnVtc2NkZHl3emhkcWxpc3BrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDgxOTE1NTEsImV4cCI6MjA2Mzc2NzU1MX0.0Aa3BELR4SJItWe0rqg3frgjfFF7coxVzuGrD-b1jzc
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+> Note: The provided key is a public anon key—suitable for querying but not for ingestion.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+#### Option B: Use Your Own Supabase Project
 
-### `npm run eject`
+* Sign up at [Supabase](https://supabase.com)
+* Create a new project
+* Add the following to `.env` (use service role key for ingestion):
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+```env
+OPENAI_API_KEY=[YOUR_OPENAI_API_KEY]
+SUPABASE_URL=[YOUR_SUPABASE_URL]
+SUPABASE_KEY=[YOUR_SERVICE_ROLE_KEY]
+```
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+* Enable the `vector` extension:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+```sql
+create extension if not exists vector;
+```
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+* Create the `trivia_facts` table:
 
-## Learn More
+```sql
+CREATE TABLE trivia_facts (
+  id uuid DEFAULT uuid_generate_v4(),
+  embedding vector(1536),
+  content text,
+  metadata jsonb,
+  PRIMARY KEY (id)
+);
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+* Insert data:
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+```bash
+cd backend
+npm run injest
+```
+
+* Define the semantic match function:
+
+```sql
+CREATE OR REPLACE FUNCTION match_trivia (
+  query_embedding vector(1536),
+  match_count int,
+  filter jsonb DEFAULT '{}'::jsonb
+)
+RETURNS TABLE (
+  id uuid,
+  content text,
+  metadata jsonb,
+  similarity float
+)
+LANGUAGE plpgsql AS $$
+BEGIN
+  RETURN QUERY
+  SELECT
+    t.id,
+    t.content,
+    t.metadata,
+    1 - (t.embedding <#> query_embedding) AS similarity
+  FROM trivia_facts t
+  WHERE t.metadata @> filter
+  ORDER BY t.embedding <#> query_embedding
+  LIMIT match_count;
+END;
+$$;
+```
+
+### 3. Run the Application
+
+```bash
+cd frontend && npm start
+cd backend && npm start
+```
+
+> Default ports: frontend on 3000, backend on 3001
+
+---
+
+
+## Design Decisions
+
+### ReAct Agent with Tool Modularity
+
+Used LangChain's `initializeAgentExecutorWithOptions` with `zero-shot-react-description` to enable dynamic tool usage:
+
+* `VectorSearchTool()` for semantic retrieval
+* `CheckNoResult()` to validate search results
+
+### Robust Output Parsing
+
+* Applied `jsonrepair` to handle malformed JSON
+* Enforced strict schema validation (question, 4 options, answerIndex)
+
+### Retry & Resilience Logic
+
+* Agent call wrapped in retry logic (up to 3 attempts)
+* Graceful fallback to dummy question ensures stable UX
+
+### Temperature Tuning
+
+* Set temperature to 0.8 for more creative, non-repetitive question generation
+
+---
+
+## Assumptions
+
+* **LLM Token Limits Are Not Exceeded**: The context window stays within the bounds of the selected OpenAI model.
+* **Supabase Vector Search Latency Is Acceptable**: Assumes retrieval is performant enough for real-time use.
+* **Tool Descriptions Remain Stable**: ReAct behavior relies on consistent tool prompts.
+* **LLM Is Available and Consistent**: Relies on OpenAI APIs being up, responsive, and consistent.
+
+---
+
+## Technical Challenges Tackled
+
+### 1. Prompt Engineering
+
+* Iteratively tuned prompts for structured JSON, context grounding, and graceful fallback behavior
+
+### 2. Tool Coordination via ReAct
+
+* Ensured clear signal to agent when to invoke vector search, validate results, or retry
+
+### 3. Output Cleanup and Validation
+
+* Integrated `jsonrepair` and schema checks to avoid runtime issues from malformed LLM output
+
+### 4. Retry Strategy
+
+* Designed robust retry loop with backoff and fallback to preserve user experience
+
+---
+
+## If I Had More Time
+
+### 1. Latency Optimization (\~5s average)
+
+* Replace ReAct with function-calling agents or simpler chains
+* Pre-cache frequent questions
+* Add Supabase query caching or concurrency
+
+### 2. Fine-Tuned or Distilled Models
+
+* Use a smaller, task-specific model for faster question generation
+* Offload simple questions from GPT-4o to cheaper/faster models
+
+### 3. Smarter Topic Seeding
+
+* Dynamically select topics using user context or content popularity
+* Enables offline pre-generation to reduce real-time load
+
+### 4. Usage Monitoring & Tracing
+
+* Integrate LangSmith or basic tracing to monitor:
+
+  * Tool usage
+  * Retry rates
+  * Latency breakdowns
+  * Failure modes
+
+### 5. Answer Explanation & Feedback Loop
+
+* Generate rationale for answers
+* Collect user feedback for future fine-tuning
+
+### 6. Lightweight Interface
+
+* Simple CLI or React UI for testing, tracing, and feedback
+* Easier demoing and usability validation
+
+---
