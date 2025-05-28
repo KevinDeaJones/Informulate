@@ -1,0 +1,19 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "injest": "node ./data-injest/index.js"
+  },
+  "type": "module",
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@langchain/community": "^0.3.45",
+    "@langchain/openai": "^0.5.11",
+    "@supabase/supabase-js": "^2.49.8",
+    "dotenv": "^16.5.0"
+  }
+}
